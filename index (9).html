@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<link rel="icon" type="image/png" href="images/favicon.jpg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LeTrama</title>
+<meta name="description" content="Bolsas de crochê 100% artesanais, feitas à mão, uma a uma.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&family=Karla:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F3EEE3;
+    --bg-alt: #EAE1D0;
+    --surface: #FBF8F2;
+    --ink: #2E2620;
+    --ink-soft: #6E6153;
+    --accent: #8C4A3D;
+    --accent-soft: #C97B65;
+    --accent-tint: #F1DCD3;
+    --moss: #6E7355;
+    --moss-tint: #E2E4D6;
+    --border: #D9CFBE;
+    --gold: #A9895B;
+    --shadow: 0 1px 2px rgba(46,38,32,0.06);
+    --header-bg: rgba(243,238,227,0.86);
+    --radius-s: 3px;
+    --radius-m: 6px;
+    --maxw: 1180px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg: #211A15;
+      --bg-alt: #2A221B;
+      --surface: #2C241D;
+      --ink: #EDE5D8;
+      --ink-soft: #B9AB99;
+      --accent: #D98F78;
+      --accent-soft: #E7AE9B;
+      --accent-tint: #3A2A24;
+      --moss: #A2AC84;
+      --moss-tint: #333827;
+      --border: #443A2F;
+      --gold: #C7A87A;
+      --shadow: 0 1px 3px rgba(0,0,0,0.35);
+      --header-bg: rgba(33,26,21,0.86);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg: #211A15;
+    --bg-alt: #2A221B;
+    --surface: #2C241D;
+    --ink: #EDE5D8;
+    --ink-soft: #B9AB99;
+    --accent: #D98F78;
+    --accent-soft: #E7AE9B;
+    --accent-tint: #3A2A24;
+    --moss: #A2AC84;
+    --moss-tint: #333827;
+    --border: #443A2F;
+    --gold: #C7A87A;
+    --shadow: 0 1px 3px rgba(0,0,0,0.35);
+    --header-bg: rgba(33,26,21,0.86);
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+  body{
+    margin:0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Karla', "Helvetica Neue", Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg{ max-width:100%; display:block; }
+  a{ color: inherit; }
+  button{ font-family: inherit; }
+
+  h1,h2,h3{
+    font-family: 'Fraunces', Georgia, serif;
+    font-weight: 500;
+    line-height: 1.15;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .wrap{
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding-inline: clamp(1.25rem, 4vw, 3rem);
+  }
+
+  :focus-visible{
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* ---------- Header ---------- */
+  header.site{
+    position: sticky; top:0; z-index: 40;
+    background: var(--header-bg);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border);
+  }
+  header.site .bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-block: 0.2rem;
+    transition: padding .2s ease;
+  }
+  header.site.compact .bar{ padding-block: 0.15rem; }
+ .logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Tamanho da logo: mexa só em --logo-h (altura). "compact" = ao rolar a página. */
+header.site{ --logo-h: 40px; }
+header.site.compact{ --logo-h: 32px; }
+.logo img {
+  height: var(--logo-h);
+  width: auto;
+  max-width: none;
+  display: block;
+  transform: scale(1.45);
+  transition: height .2s ease;
+}
+  nav.main{ display:flex; align-items:center; gap: 2.2rem; }
+  nav.main a{
+    text-decoration:none;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    transition: color .15s ease;
+  }
+  nav.main a:hover{ color: var(--accent); }
+  .header-actions{ display:flex; align-items:center; gap: 1.4rem; }
+
+  .cart-btn{
+    position:relative;
+    display:flex; align-items:center; gap:.5rem;
+    background:none; border:1px solid var(--border);
+    padding: .45rem .85rem;
+    border-radius: var(--radius-m);
+    cursor:pointer;
+    color: var(--ink);
+    font-size: .88rem;
+    transition: padding .2s ease;
+  }
+  header.site.compact .cart-btn{ padding: .35rem .8rem; }
+  .cart-btn:hover{ border-color: var(--accent); }
+  .cart-count{
+    background: var(--accent);
+    color: var(--surface);
+    font-size: .72rem;
+    min-width: 1.2rem; height: 1.2rem;
+    border-radius: 50%;
+    display:flex; align-items:center; justify-content:center;
+    padding: 0 .3rem;
+  }
+  .menu-toggle{
+    display:none;
+    background:none; border:none; cursor:pointer;
+    padding: .4rem;
+  }
+  .menu-toggle span{
+    display:block; width:22px; height:2px; background: var(--ink);
+    margin: 4px 0;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+  position: relative;
+  padding-block: clamp(4.5rem, 12vw, 8rem) clamp(4.5rem, 12vw, 8rem);
+  overflow: hidden;
+  background-image:
+    linear-gradient(180deg, rgba(33,26,21,0.55) 0%, rgba(33,26,21,0.35) 45%, rgba(33,26,21,0.65) 100%),
+    url('images/hero-bg.png');
+  background-size: cover;
+  background-position: center 30%;
+  color: #FBF6F0;
+}
+.hero .wrap{
+  display: flex;
+  justify-content: flex-start;
+}
+.hero-copy{
+  max-width: 560px;
+}
+.hero-eyebrow{
+  color: #E7C9BC;
+}
+.hero h1{
+  color: #FBF6F0;
+}
+.hero p.lede{
+  color: #EDE0D4;
+}
+.hero-art{ display:none; }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items:center;
+    gap: clamp(2rem, 5vw, 4rem);
+  }
+  .hero-eyebrow{
+    font-size: .95rem;
+    color: var(--moss);
+    margin: 0 0 1.1rem;
+  }
+  .hero h1{
+    font-size: clamp(2.3rem, 4.6vw, 3.6rem);
+    max-width: 14ch;
+  }
+  .hero p.lede{
+    margin: 1.4rem 0 2rem;
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    max-width: 42ch;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:.6rem;
+    background: var(--accent);
+    color: #FBF6F0;
+    text-decoration:none;
+    padding: .85rem 1.6rem;
+    border-radius: var(--radius-m);
+    border: none;
+    font-size: .98rem;
+    cursor:pointer;
+    transition: background .15s ease, transform .15s ease;
+  }
+  .btn:hover{ background: var(--accent-soft); }
+  .btn:active{ transform: translateY(1px); }
+  .btn.ghost{
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--ink);
+  }
+  .btn.ghost:hover{ border-color: var(--accent); color: var(--accent); }
+  .btn.small{ padding: .55rem 1.05rem; font-size: .88rem; }
+  .btn.full{ width:100%; justify-content:center; }
+  .btn[disabled]{ opacity:.5; cursor:not-allowed; }
+
+  /* ---------- Peça esgotada ---------- */
+  .sold-badge{
+    position: absolute;
+    top: .7rem; left: .7rem;
+    background: var(--ink);
+    color: var(--surface);
+    font-size: .68rem;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    padding: .35rem .65rem;
+    border-radius: var(--radius-s);
+    z-index: 2;
+  }
+  .card.is-sold .swatch{ filter: grayscale(45%); opacity: .68; }
+
+  .hero-art{ position:relative; }
+  .hero-art svg{ width:100%; height:auto; }
+
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{
+      animation: rise .8s cubic-bezier(.2,.7,.3,1) both;
+    }
+    .reveal.d1{ animation-delay: .08s; }
+    .reveal.d2{ animation-delay: .16s; }
+    @keyframes rise{
+      from{ opacity:0; transform: translateY(14px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+  }
+
+  /* ---------- Intro statement ---------- */
+  .statement{
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-alt);
+  }
+  .statement .wrap{ max-width: 760px; text-align:center; }
+  .statement p{
+    font-family:'Fraunces', serif;
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.4vw, 1.55rem);
+    color: var(--ink);
+    margin:0;
+    line-height: 1.5;
+  }
+
+  /* ---------- Section heading ---------- */
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap: 1.5rem;
+    margin-bottom: 2.4rem;
+    flex-wrap: wrap;
+  }
+  .section-head h2{ font-size: clamp(1.7rem, 3vw, 2.2rem); }
+  .section-head p{ color: var(--ink-soft); max-width: 40ch; margin: .6rem 0 0; }
+
+  section.collection{ padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+
+  /* ---------- Product grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.4rem, 3vw, 2.4rem);
+  }
+  .card{
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    overflow:hidden;
+    display:flex; flex-direction:column;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .card:hover{ transform: translateY(-3px); box-shadow: 0 10px 24px rgba(46,38,32,0.10); }
+
+  .swatch{
+    aspect-ratio: 4 / 5;
+    position:relative;
+    background-color: var(--swatch, var(--moss));
+    background-image:
+      radial-gradient(circle at 22% 26%, rgba(255,255,255,.30) 2.6px, transparent 3.2px),
+      radial-gradient(circle at 58% 60%, rgba(255,255,255,.18) 2.6px, transparent 3.2px),
+      radial-gradient(circle at 82% 32%, rgba(0,0,0,.12) 2.6px, transparent 3.2px),
+      radial-gradient(circle at 36% 86%, rgba(0,0,0,.10) 2.6px, transparent 3.2px),
+      radial-gradient(circle at 8% 66%, rgba(255,255,255,.14) 2.2px, transparent 2.8px);
+    background-size: 36px 36px;
+    cursor:pointer;
+  }
+  .swatch::after{
+    content:"";
+    position:absolute; inset:0;
+    background: linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.08) 100%);
+  }
+  /* Foto real dentro do swatch: quando o produto tiver "images", um <img>
+     é inserido dentro da div e preenche o quadro por cima do fundo colorido. */
+  .swatch img,
+  .swatch-sm img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card-body{
+    padding: 1.1rem 1.2rem 1.3rem;
+    display:flex; flex-direction:column; gap:.45rem;
+    flex:1;
+  }
+  .card-body h3{ font-size: 1.12rem; font-weight:500; }
+  .card-price{ color: var(--ink-soft); font-size: .95rem; }
+  .card-actions{
+    margin-top: auto;
+    display:flex; gap: .6rem;
+    padding-top: .9rem;
+  }
+  .link-btn{
+    background:none; border:none; padding:0;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    font-size: .88rem;
+    cursor:pointer;
+  }
+  .link-btn:hover{ color: var(--accent); }
+
+  /* ---------- Craft story ---------- */
+  section.craft{
+    padding-block: clamp(3.5rem, 7vw, 5.5rem);
+    background: var(--bg-alt);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  section.craft .wrap{
+    display:grid; grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items:center;
+  }
+  .craft-visual{
+    aspect-ratio: 1/1;
+    border-radius: var(--radius-m);
+    background-color: var(--accent-tint);
+    position:relative;
+    overflow:hidden;
+  }
+  .craft-visual svg{ position:absolute; inset:0; width:100%; height:100%; }
+  .craft-copy p{ color: var(--ink-soft); max-width: 52ch; margin: 1rem 0 0; }
+  .craft-copy p:first-of-type{ margin-top: 1.2rem; }
+  .stat-row{ display:flex; gap: 2.4rem; margin-top: 1.8rem; flex-wrap:wrap; }
+  .stat b{
+    display:block; font-family:'Fraunces', serif; font-size: 1.6rem; color: var(--accent);
+  }
+  .stat span{ font-size: .85rem; color: var(--ink-soft); }
+
+  .craft-visual img.craft-photo{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+  /* ---------- Footer ---------- */
+  footer{ padding-block: 3.2rem 2.4rem; }
+  footer .wrap{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap: 2rem;
+    border-top: 1px solid var(--border);
+    padding-top: 2.4rem;
+  }
+  footer .col p, footer .col a{
+    display:block; color: var(--ink-soft); text-decoration:none; font-size: .92rem;
+    margin: .35rem 0;
+  }
+  footer .col a:hover{ color: var(--accent); }
+  footer .col h4{
+    font-family: 'Karla', sans-serif; font-weight:600; font-size: .82rem;
+    color: var(--ink); margin: 0 0 .8rem;
+  }
+  .copyright{
+    text-align:center; color: var(--ink-soft); font-size: .82rem;
+    margin-top: 2.4rem;
+  }
+
+  /* ---------- Cart drawer ---------- */
+  .overlay{
+    position:fixed; inset:0; background: rgba(46,38,32,0.35);
+    opacity:0; pointer-events:none; transition: opacity .25s ease;
+    z-index: 60;
+  }
+  .overlay.open{ opacity:1; pointer-events:auto; }
+
+  .drawer{
+    position:fixed; top:0; right:0; height:100%;
+    width: min(420px, 100%);
+    background: var(--surface);
+    z-index: 70;
+    display:flex; flex-direction:column;
+    transform: translateX(100%);
+    transition: transform .3s cubic-bezier(.2,.7,.3,1);
+    box-shadow: -8px 0 30px rgba(0,0,0,0.12);
+  }
+  .drawer.open{ transform: translateX(0); }
+  .drawer-head{
+    display:flex; justify-content:space-between; align-items:center;
+    padding: 1.4rem 1.4rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .drawer-head h3{ font-size: 1.25rem; }
+  .icon-btn{
+    background:none; border:none; cursor:pointer; font-size: 1.3rem;
+    color: var(--ink-soft); line-height:1; padding: .2rem;
+  }
+  .icon-btn:hover{ color: var(--accent); }
+  .drawer-items{ flex:1; overflow-y:auto; padding: 1rem 1.4rem; }
+  .drawer-empty{ color: var(--ink-soft); padding: 2rem 0; text-align:center; }
+  .cart-item{
+    display:grid; grid-template-columns: 58px 1fr auto; gap: .9rem;
+    align-items:center; padding: .9rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .cart-item .swatch-sm{
+    width:58px; height:58px; border-radius: var(--radius-s);
+    background-color: var(--swatch, var(--moss));
+    background-image:
+      radial-gradient(circle at 25% 30%, rgba(255,255,255,.28) 2px, transparent 2.6px),
+      radial-gradient(circle at 70% 65%, rgba(0,0,0,.10) 2px, transparent 2.6px);
+    background-size: 16px 16px;
+    overflow: hidden;
+  }
+  .cart-item h4{ font-size: .95rem; font-weight:500; margin:0 0 .3rem; }
+  .qty-row{ display:flex; align-items:center; gap:.6rem; }
+  .qty-label{
+    display:block;
+    font-size:.82rem;
+    color: var(--ink-soft);
+    margin: .15rem 0 .4rem;
+  }
+  .qty-row button{
+    width: 22px; height:22px; border-radius:50%;
+    border: 1px solid var(--border); background:none; cursor:pointer;
+    color: var(--ink); line-height:1; font-size: .85rem;
+  }
+  .cart-item-price{ font-size: .88rem; color: var(--ink-soft); text-align:right; }
+  .remove-x{
+    background:none; border:none; color: var(--ink-soft); cursor:pointer;
+    font-size: .78rem; text-decoration:underline; padding:0; margin-top:.4rem;
+  }
+  .drawer-foot{
+    padding: 1.2rem 1.4rem 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .subtotal-row{
+    display:flex; justify-content:space-between; margin-bottom: 1rem;
+    font-size: 1.02rem;
+  }
+  .drawer-foot small{ display:block; color: var(--ink-soft); margin-top:.8rem; font-size:.8rem; }
+
+  /* ---------- Cálculo de frete (dentro do carrinho) ---------- */
+  .ship{ margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+  .ship label{ display:block; font-size:.82rem; font-weight:600; margin-bottom:.4rem; }
+  .ship-row{ display:flex; gap:.5rem; }
+  .ship-row input{
+    flex:1; min-width:0;
+    padding: .55rem .75rem;
+    border: 1px solid var(--border); border-radius: var(--radius-m);
+    background: var(--bg); color: var(--ink);
+    font: inherit; font-size: .92rem;
+  }
+  .ship-row input:focus-visible{ outline: 2px solid var(--accent); outline-offset: 1px; }
+  .ship-msg{ margin: .5rem 0 0; font-size: .82rem; color: var(--ink-soft); min-height: 1.1em; }
+  .ship-msg.is-error{ color: var(--accent); }
+  .ship-msg.is-ok{ color: var(--moss); }
+  .ship-help{ font-size:.78rem; color: var(--ink-soft); }
+  .ship-help a{ color: var(--ink-soft); }
+  .subtotal-row[hidden], .ship[hidden]{ display:none; }
+  .subtotal-row.sub{ font-size: .92rem; color: var(--ink-soft); margin-bottom: .5rem; }
+  .subtotal-row.total{ padding-top: .7rem; border-top: 1px solid var(--border); }
+
+  /* ---------- Product modal ---------- */
+  .modal{
+    position:fixed; inset:0; z-index:80;
+    display:flex; align-items:center; justify-content:center;
+    padding: 1.4rem;
+    opacity:0; pointer-events:none;
+    transition: opacity .25s ease;
+  }
+  .modal.open{ opacity:1; pointer-events:auto; }
+  .modal-panel{
+    background: var(--surface);
+    max-width: 900px; width:100%;
+    max-height: 88vh; overflow-y:auto;
+    border-radius: var(--radius-m);
+    display:grid; grid-template-columns: 1fr 1fr;
+    position:relative;
+  }
+  .modal-panel .swatch{ aspect-ratio: auto; height:100%; min-height: 320px; cursor:default; }
+  .modal-close{
+    position:absolute; top: .9rem; right:.9rem;
+    background: var(--surface); border: 1px solid var(--border);
+    width:34px; height:34px; border-radius:50%;
+    cursor:pointer; font-size:1.1rem; color: var(--ink);
+    z-index:4;
+  }
+  .modal-info{ padding: 2rem clamp(1.4rem,3vw,2.4rem); }
+  .modal-info .card-price{ font-size: 1.1rem; margin: .4rem 0 1.2rem; color: var(--accent); }
+  .modal-info p.desc{ color: var(--ink-soft); margin: 0 0 1.4rem; }
+  .spec-list{ margin: 0 0 1.6rem; padding:0; list-style:none; }
+  .spec-list li{
+    display:flex; justify-content:space-between; gap:1rem;
+    padding: .55rem 0; border-top:1px solid var(--border);
+    font-size: .9rem;
+  }
+  .spec-list li span:first-child{ color: var(--ink-soft); }
+  .color-dots{ display:flex; gap:.5rem; align-items:center; }
+  .dot{ width:16px; height:16px; border-radius:50%; border:1px solid rgba(0,0,0,0.15); display:inline-block; }
+
+  /* ---------- Galeria de fotos (dentro do modal) ---------- */
+  .gallery-arrow{
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:36px; height:36px; border-radius:50%;
+  background: var(--surface);
+  border:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.15rem; line-height:1; color: var(--ink); cursor:pointer;
+  box-shadow: 0 2px 6px rgba(46,38,32,0.18);
+  z-index:3;
+}
+.gallery-arrow:hover{ box-shadow: 0 3px 10px rgba(46,38,32,0.28); }
+  .gallery-arrow.prev{ left:.8rem; }
+  .gallery-arrow.next{ right:.8rem; }
+
+  .gallery-dots{
+    position:absolute; bottom:.8rem; left:50%; transform:translateX(-50%);
+    display:flex; gap:.4rem;
+    padding:.35rem .5rem; border-radius:999px;
+    background: rgba(46,38,32,0.38);
+    z-index:3;
+  }
+  .gallery-dots button{
+    width:6px; height:6px; border-radius:50%;
+    background: rgba(255,255,255,0.5); border:none; padding:0; cursor:pointer;
+  }
+  .gallery-dots button.is-active{ background:#fff; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 880px){
+    .hero .wrap{ grid-template-columns:1fr; }
+    .hero-art{ order:-1; max-width: 380px; margin: 0 auto; }
+    section.craft .wrap{ grid-template-columns:1fr; }
+    .craft-visual{ max-width:380px; margin: 0 auto; }
+    .modal-panel{ grid-template-columns:1fr; }
+    .modal-panel .swatch{ min-height: 240px; }
+  }
+  @media (max-width: 720px){
+    nav.main{
+      position:absolute; top: 100%; left:0; right:0;
+      background: var(--bg); border-bottom:1px solid var(--border);
+      flex-direction:column; align-items:flex-start; gap:0;
+      padding: .5rem clamp(1.25rem,4vw,3rem) 1rem;
+      display:none;
+    }
+    nav.main.open{ display:flex; }
+    nav.main a{ padding: .7rem 0; width:100%; }
+    .menu-toggle{ display:block; }
+    .grid{ grid-template-columns: 1fr 1fr; }
+    .stat-row{ gap:1.4rem; }
+  }
+  @media (max-width: 480px){
+    .grid{ grid-template-columns: 1fr; max-width:340px; margin-inline:auto; }
+    footer .wrap{ flex-direction:column; gap:1.6rem; }
+  }
+
+  /* ---------- Faixa de avisos no topo (estática) ---------- */
+  .topbar{
+    background: var(--accent);
+    color: var(--surface);
+    text-align: center;
+    font-size: .76rem;
+    font-weight: 600;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: .62rem clamp(1rem, 4vw, 3rem);
+  }
+  .topbar .wrap{
+    display:flex; flex-wrap:wrap; justify-content:center; align-items:center;
+    column-gap: 1.6rem; row-gap: .15rem;
+    padding-inline: 0;
+  }
+  .topbar span + span::before{
+    content:"✦";
+    margin-right: 1.6rem;
+    font-size: .7rem;
+    opacity: .7;
+  }
+  @media (max-width: 480px){
+    .topbar{ font-size: .68rem; letter-spacing: .08em; }
+    .topbar .wrap{ column-gap: 1rem; }
+    .topbar span + span::before{ margin-right: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Faixa de avisos: edite as frases abaixo -->
+<div class="topbar" role="region" aria-label="Avisos da loja">
+  <div class="wrap">
+    <span>Frete grátis acima de R$300</span>
+    <span>5% OFF no Pix</span>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap bar">
+    <a class="logo" href="#topo">
+  <img src="images/escrita.png" alt="Letrama">
+</a>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav class="main" id="mainNav">
+      <a href="#colecao">Coleção</a>
+      <a href="#oficio">O ofício</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <div class="header-actions">
+      <button class="cart-btn" id="cartOpenBtn" aria-label="Abrir carrinho">
+        Carrinho <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="topo">
+  <!-- ---------- HERO ---------- -->
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <p class="hero-eyebrow reveal">Feito à mão, ponto a ponto</p>
+        <h1 class="reveal d1">Tramada à mão,<br>peça por peça.</h1>
+        <p class="lede reveal d2">Bolsas de crochê autorais, criadas uma a uma por uma artesã — sem pressa e sem duas peças exatamente iguais.</p>
+        <a href="#colecao" class="btn reveal d2">Ver a coleção</a>
+      </div>
+      <div class="hero-art">
+        <svg viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustração de uma bolsa de crochê">
+          <defs>
+            <g id="motif">
+              <circle cx="0" cy="-9" r="4" />
+              <circle cx="8.5" cy="-4.5" r="4" />
+              <circle cx="8.5" cy="4.5" r="4" />
+              <circle cx="0" cy="9" r="4" />
+              <circle cx="-8.5" cy="4.5" r="4" />
+              <circle cx="-8.5" cy="-4.5" r="4" />
+              <circle cx="0" cy="0" r="4.5" />
+            </g>
+          </defs>
+          <g fill="var(--moss)" opacity="0.16">
+            <use href="#motif" transform="translate(90,120) scale(1.4)"/>
+            <use href="#motif" transform="translate(470,90) scale(1.1)"/>
+            <use href="#motif" transform="translate(500,300) scale(1.6)"/>
+            <use href="#motif" transform="translate(60,420) scale(1.2)"/>
+            <use href="#motif" transform="translate(460,470) scale(1.3)"/>
+          </g>
+          <g fill="var(--accent)" opacity="0.14">
+            <use href="#motif" transform="translate(150,470) scale(1.1)"/>
+            <use href="#motif" transform="translate(40,260) scale(1.3)"/>
+            <use href="#motif" transform="translate(430,190) scale(1)"/>
+          </g>
+          <path d="M195,150 C195,95 240,55 280,55 C320,55 365,95 365,150" stroke="var(--ink)" stroke-opacity="0.55" stroke-width="2.5" fill="none"/>
+          <path d="M150,215 C150,178 178,150 216,150 L344,150 C382,150 410,178 410,215 L432,440 C432,472 400,495 358,495 L202,495 C160,495 128,472 128,440 Z"
+                fill="var(--surface)" stroke="var(--ink)" stroke-opacity="0.55" stroke-width="2.5"/>
+          <g fill="var(--accent)" opacity="0.85">
+            <use href="#motif" transform="translate(220,230) scale(1.15)"/>
+            <use href="#motif" transform="translate(280,230) scale(1.15)"/>
+            <use href="#motif" transform="translate(340,230) scale(1.15)"/>
+            <use href="#motif" transform="translate(250,278) scale(1.15)"/>
+            <use href="#motif" transform="translate(310,278) scale(1.15)"/>
+            <use href="#motif" transform="translate(220,326) scale(1.15)"/>
+            <use href="#motif" transform="translate(280,326) scale(1.15)"/>
+            <use href="#motif" transform="translate(340,326) scale(1.15)"/>
+          </g>
+          <path d="M128,400 C220,385 340,385 432,400" stroke="var(--ink)" stroke-opacity="0.3" stroke-width="1.5" fill="none"/>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- BRAND STATEMENT ---------- -->
+  <section class="statement">
+    <div class="wrap">
+      <p>"Da escolha do fio ao último ponto, cada bolsa nasce das mãos de uma artesã — devagar, com atenção, sem repetição."</p>
+    </div>
+  </section>
+
+  <!-- ---------- COLLECTION ---------- -->
+  <section class="collection" id="colecao">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <h2>A coleção</h2>
+          <p>Dez modelos, dez personalidades — todos com a mesma dedicação manual.</p>
+        </div>
+      </div>
+      <div class="grid" id="productGrid"></div>
+    </div>
+  </section>
+
+  <!-- ---------- CRAFT STORY ---------- -->
+  <section class="craft" id="oficio">
+    <div class="wrap">
+      <div class="craft-visual">
+  <img src="images/oficio.jpeg" alt="Foto do ofício artesanal" class="craft-photo">
+</div>
+      <div class="craft-copy">
+        <h2>O ofício por trás de cada bolsa</h2>
+        <p>Cada peça da LeTrama é feita à mão, com fio de algodão selecionado e pontos de crochê tradicionais, passados de geração em geração.</p>
+        <p>Não há linhas de produção. Há uma artesã, um fio e o tempo necessário para que cada bolsa fique pronta do jeito certo.</p>
+        <div class="stat-row">
+          <div class="stat"><b>100%</b><span>feito à mão</span></div>
+          <div class="stat"><b>1 a 1</b><span>peças únicas</span></div>
+          <div class="stat"><b>+18h</b><span>de trabalho manual, em média</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="contato">
+  <div class="wrap">
+    <div class="col">
+      <h4>LeTrama</h4>
+      <p>Bolsas de crochê artesanais, feitas à mão, uma a uma.</p>
+    </div>
+    <div class="col">
+      <h4>Navegação</h4>
+      <a href="#colecao">Coleção</a>
+      <a href="#oficio">O ofício</a>
+    </div>
+    <div class="col">
+      <h4>Contato</h4>
+      <a href="#" id="footerWhatsapp">WhatsApp</a>
+      <a href="https://www.instagram.com/useletrama/" target="_blank" rel="noopener noreferrer"> Instagram </a>
+    </div>
+  </div>
+  <p class="copyright">© 2026 LeTrama. Todos os direitos reservados.</p>
+</footer>
+
+<!-- ---------- CART DRAWER ---------- -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="cartDrawer" aria-label="Carrinho de compras">
+  <div class="drawer-head">
+    <h3>Seu carrinho</h3>
+    <button class="icon-btn" id="cartCloseBtn" aria-label="Fechar carrinho">✕</button>
+  </div>
+  <div class="drawer-items" id="drawerItems"></div>
+  <div class="drawer-foot">
+    <div class="ship" id="shipBox">
+      <label for="cepInput">Calcular frete</label>
+      <div class="ship-row">
+        <input id="cepInput" type="text" inputmode="numeric" autocomplete="postal-code"
+               maxlength="9" placeholder="Digite seu CEP" aria-describedby="shipMsg">
+        <button class="btn small" id="cepBtn" type="button">Calcular</button>
+      </div>
+      <p class="ship-msg" id="shipMsg" aria-live="polite"></p>
+      <span class="ship-help"><a href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank" rel="noopener noreferrer">Não sei meu CEP</a></span>
+    </div>
+    <div class="subtotal-row sub" id="subRow"><span>Subtotal</span><span id="cartSubtotal">R$ 0,00</span></div>
+    <div class="subtotal-row sub" id="shipRow" hidden><span>Frete</span><span id="cartShipping"></span></div>
+    <div class="subtotal-row total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
+    <button class="btn full" id="checkoutBtn">Finalizar pelo WhatsApp</button>
+    <small>Frete estimado pelo CEP. O valor final e o prazo de confecção são confirmados com a artesã.</small>
+  </div>
+</aside>
+
+<!-- ---------- PRODUCT MODAL ---------- -->
+<div class="modal" id="productModal">
+  <div class="modal-panel">
+    <button class="modal-close" id="modalCloseBtn" aria-label="Fechar detalhes">✕</button>
+    <div class="swatch" id="modalSwatch"></div>
+    <div class="modal-info">
+      <h3 id="modalName"></h3>
+      <p class="card-price" id="modalPrice"></p>
+      <p class="desc" id="modalDesc"></p>
+      <ul class="spec-list">
+        <li><span>Material</span><span id="modalMaterial"></span></li>
+        <li><span>Dimensões</span><span id="modalDims"></span></li>
+        <li><span>Cores disponíveis</span><span class="color-dots" id="modalColors"></span></li>
+      </ul>
+      <button class="btn" id="modalAddBtn">Adicionar ao carrinho</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ---------------------------------------------------------------
+  // Catálogo de produtos. Edite/adicione bolsas aqui.
+  // "swatch" define a cor do quadro decorativo que substitui a foto.
+  //
+  // "images" é a LISTA de fotos da bolsa (array). A primeira é usada
+  // como foto de capa no card da coleção e no carrinho. No modal de
+  // detalhes (ao clicar na bolsa), todas aparecem numa galeria com
+  // setas e bolinhas pra passar de uma foto pra outra — ótimo pra
+  // mostrar frente, costas, por cima, detalhe, etc.
+  //   images: []                                 -> sem foto (mostra o quadro colorido)
+  //   images: ['foto1.jpg']                       -> 1 foto, sem galeria
+  //   images: ['foto1.jpg','foto2.jpg','foto3.jpg'] -> galeria com 3 fotos
+  // ---------------------------------------------------------------
+  const products = [
+    {
+      id: 'aurora',
+      name: 'Bolsa Creamy',
+      price: 240,
+      swatch: '#8C4A3D',
+      images: ['images/creamy.jpeg', 'images/creamy2.jpeg', 'images/creamy3.jpeg'],
+      soldOut: false,
+      desc: 'Tote grande de crochê em ponto alto cerrado, ideal para o dia a dia. Estrutura firme e forro interno em algodão cru.',
+      material: 'Fio de algodão 100% penteado',
+      dims: '38 x 30 x 14 cm · alça 55 cm',
+      colors: ['#C5AD93', '#724E38']
+    },
+    {
+      id: 'amora',
+      name: 'Clutch Madeleine',
+      price: 190,
+      swatch: '#6B3A44',
+      images: ['images/tutti.jpeg', 'images/tutti2.png', 'images/tutti3.png'],
+      soldOut: false,
+      desc: 'Bolsa de ombro em tom profundo, com fecho em madeira artesanal e alça ajustável em três alturas.',
+      material: 'Fio de algodão com toque de linho',
+      dims: '28 x 24 x 10 cm · alça 60–70 cm',
+      colors: ['#CDC8C4']
+    },
+    {
+      id: 'marina',
+      name: 'Clutch Glace',
+      price: 140,
+      swatch: '#C6B48A',
+      images: ['images/glace.png', 'images/glace2.png', 'images/glace3.png'],
+      soldOut: false,
+      desc: 'Bolsa de praia em ponto vazado, leve e resistente à areia. Forro removível em tecido impermeável.',
+      material: 'Fio de algodão encerado',
+      dims: '42 x 34 x 16 cm · alça dupla',
+      colors: ['#CD9C8D', '#683824']
+    },
+    {
+      id: 'flor',
+      name: 'Bolsa Panna Cotta',
+      price: 180,
+      swatch: '#C9A0A6',
+      images: ['images/panacotta.png', 'images/panacotta2.png', 'images/panacotta3.png'],
+      soldOut: false,
+      desc: 'Clutch pequena com fechamento em botão coberto e aplicação floral em crochê feita à mão.',
+      material: 'Fio de algodão mercerizado',
+      dims: '22 x 16 x 6 cm',
+      colors: ['#C9A0A6', '#A9895B']
+    },
+    {
+      id: 'terra',
+      name: 'Bolsa Pistaccio Creamy',
+      price: 250,
+      swatch: '#6E7355',
+      images: ['images/pistaccio.png', 'images/pistaccio2.jpeg', 'images/pistaccio3.jpeg'],
+      soldOut: false,
+      desc: 'Shopper estruturada com alças de couro legítimo e base reforçada. Feita para durar anos.',
+      material: 'Fio de algodão + couro natural',
+      dims: '40 x 32 x 14 cm · alça 20 cm',
+      colors: ['#6E7355', '#2E2620', '#A9895B']
+    },
+    {
+      id: 'vento',
+      name: 'Bolsa Popcorn',
+      price: 195,
+      swatch: '#A9895B',
+      images: ['images/popcorn.png', 'images/popcorn2.jpeg', 'images/popcorn3.png'],
+      soldOut: false,
+      desc: 'Mini bag transversal, perfeita para sair leve. Detalhe em franjas trançadas à mão.',
+      material: 'Fio de algodão 100% penteado',
+      dims: '18 x 14 x 6 cm · alça 110 cm',
+      colors: ['#A9895B', '#8C4A3D']
+    },
+    {
+      id: 'caramelo',
+      name: 'Bolsa Eclair',
+      price: 150,
+      swatch: '#B07A4E',
+      images: ['images/eclair.png', 'images/eclair2.png', 'images/eclair3.png'],
+      soldOut: false,
+      desc: 'Bolsa de ombro com ponto trançado nas laterais, forro em algodão cru e fecho magnético discreto.',
+      material: 'Fio de algodão 100% penteado',
+      dims: '30 x 26 x 12 cm · alça 58 cm',
+      colors: ['#B07A4E', '#EAE1D0']
+    },
+    {
+      id: 'canela',
+      name: 'Bolsa Black Velvet',
+      price: 190,
+      swatch: '#9C5A3C',
+      images: ['images/black.png', 'images/black2.png', 'images/black3.png'],
+      soldOut: false,
+      desc: 'Bucket bag com cordão duplo de fechamento e bolso interno para celular e carteira.',
+      material: 'Fio de algodão com toque de linho',
+      dims: '26 x 26 x 14 cm · alça 65 cm',
+      colors: ['#9C5A3C', '#2E2620']
+    },
+    {
+      id: 'baunilha',
+      name: 'Bolsa Baunilha',
+      price: 239,
+      swatch: '#E3D4B8',
+      images: [],
+      soldOut: false,
+      desc: 'Modelo estruturado em tom claro, com alça curta dupla e base retangular reforçada.',
+      material: 'Fio de algodão mercerizado',
+      dims: '32 x 24 x 12 cm · alça 20 cm',
+      colors: ['#E3D4B8', '#8C4A3D']
+    },
+    {
+      id: 'avela',
+      name: 'Bolsa Avelã',
+      price: 299,
+      swatch: '#7C5C3E',
+      images: [],
+      soldOut: false,
+      desc: 'Tote de crochê grosso, ideal para levar o essencial do dia. Alças reforçadas com costura dupla.',
+      material: 'Fio de algodão grosso',
+      dims: '36 x 30 x 14 cm · alça 55 cm',
+      colors: ['#7C5C3E', '#C6B48A', '#2E2620']
+    }
+  ];
+
+  // TODO: substitua pelo número de WhatsApp real da loja (com DDI e DDD).
+  const WHATSAPP_NUMBER = '5561992681669';
+
+  // ---------------------------------------------------------------
+  // FRETE — edite aqui.
+  // Os envios saem de Brasília/DF, então a tabela está organizada por
+  // DISTÂNCIA a partir do DF: quanto mais longe, mais caro.
+  // O frete é estimado pelo ESTADO do CEP (consulta gratuita ao ViaCEP).
+  // ATENÇÃO: os valores abaixo são EXEMPLOS. Troque pelos valores reais
+  // (simule no site dos Correios / Melhor Envio saindo do seu CEP) e, se
+  // quiser, mude um estado de faixa — é só mover a sigla de uma lista pra outra.
+  // ---------------------------------------------------------------
+  const ORIGEM = 'Brasília/DF';    // só informativo
+  const FREE_SHIPPING_MIN = 300;   // frete grátis a partir deste subtotal (R$)
+  const SHIPPING_TABLE = [
+    { faixa: 'Distrito Federal (local)',    ufs: ['DF'],                                  preco: 12 },
+    { faixa: 'Vizinhos do DF',              ufs: ['GO','MG','TO'],                        preco: 18 },
+    { faixa: 'Média distância',             ufs: ['SP','RJ','ES','MT','MS','BA'],         preco: 24 },
+    { faixa: 'Longa distância',             ufs: ['PR','SC','RS','SE','AL','PE','PB','RN','CE','PI','MA'], preco: 30 },
+    { faixa: 'Norte (mais distante)',       ufs: ['PA','AP','AM','RR','AC','RO'],         preco: 38 }
+  ];
+
+  const money = v => v.toLocaleString('pt-BR', { style:'currency', currency:'BRL' });
+
+  // Retorna a foto de capa (primeira de "images") pra usar no card do
+  // grid e no item do carrinho; se não houver nenhuma, volta vazio e
+  // o fundo colorido do swatch aparece normalmente.
+  function swatchContent(p){
+    return (p.images && p.images.length) ? `<img src="${p.images[0]}" alt="${p.name}">` : '';
+  }
+
+  // Selo "Esgotada" mostrado por cima da foto/quadro quando soldOut = true
+  function soldBadge(p){
+    return p.soldOut ? '<span class="sold-badge">Esgotada</span>' : '';
+  }
+
+  // ---------------- Render collection grid ----------------
+  const grid = document.getElementById('productGrid');
+  products.forEach(p => {
+    const card = document.createElement('article');
+    card.className = 'card' + (p.soldOut ? ' is-sold' : '');
+    card.innerHTML = `
+      <div class="swatch" style="--swatch:${p.swatch}" data-open="${p.id}">${swatchContent(p)}${soldBadge(p)}</div>
+      <div class="card-body">
+        <h3>${p.name}</h3>
+        <p class="card-price">${money(p.price)}</p>
+        <div class="card-actions">
+          <button class="link-btn" data-open="${p.id}">Ver detalhes</button>
+        </div>
+        <div class="card-actions">
+          ${p.soldOut
+            ? `<button class="btn small full" disabled>Esgotada</button>`
+            : `<button class="btn small full" data-add="${p.id}">Adicionar ao carrinho</button>`}
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  // ---------------- Cart state ----------------
+  let cart = {};
+  try {
+    const saved = localStorage.getItem('letrama_cart');
+    if (saved) cart = JSON.parse(saved);
+  } catch (e) { cart = {}; }
+
+  function saveCart(){
+    try { localStorage.setItem('letrama_cart', JSON.stringify(cart)); } catch(e){}
+  }
+
+  function addToCart(id){
+    // cada peça é única — não deixa adicionar a mesma bolsa mais de uma vez
+    if (cart[id]) {
+      openCart();
+      return;
+    }
+    cart[id] = 1;
+    saveCart();
+    renderCart();
+    openCart();
+  }
+  function removeItem(id){
+    delete cart[id];
+    saveCart();
+    renderCart();
+  }
+
+  function renderCart(){
+    const items = Object.keys(cart);
+    const wrap = document.getElementById('drawerItems');
+    const countEl = document.getElementById('cartCount');
+    const subtotalEl = document.getElementById('cartSubtotal');
+    countEl.textContent = items.length;
+
+    if (items.length === 0){
+      wrap.innerHTML = '<p class="drawer-empty">Seu carrinho está vazio.</p>';
+      subtotalEl.textContent = money(0);
+      document.getElementById('checkoutBtn').disabled = true;
+      renderTotals(0);
+      return;
+    }
+    document.getElementById('checkoutBtn').disabled = false;
+
+    let subtotal = 0;
+    wrap.innerHTML = items.map(id => {
+      const p = products.find(x => x.id === id);
+      subtotal += p.price;
+      return `
+        <div class="cart-item">
+          <div class="swatch-sm" style="--swatch:${p.swatch}">${swatchContent(p)}</div>
+          <div>
+            <h4>${p.name}</h4>
+            <span class="qty-label">Peça única · 1 un.</span>
+            <button class="remove-x" data-remove="${id}">remover</button>
+          </div>
+          <div class="cart-item-price">${money(p.price)}</div>
+        </div>`;
+    }).join('');
+    subtotalEl.textContent = money(subtotal);
+    renderTotals(subtotal);
+  }
+
+  // ---------------- Frete (CEP -> estado -> valor) ----------------
+  let shipTo = null;   // { cep, uf, city } depois de calcular
+  try {
+    const savedShip = JSON.parse(localStorage.getItem('letrama_frete') || 'null');
+    if (savedShip && savedShip.uf && savedShip.cep) shipTo = savedShip;
+  } catch (e) { shipTo = null; }
+
+  const cepInput = document.getElementById('cepInput');
+  const cepBtn = document.getElementById('cepBtn');
+  const shipMsg = document.getElementById('shipMsg');
+
+  function setShipMsg(text, kind){
+    shipMsg.textContent = text || '';
+    shipMsg.className = 'ship-msg' + (kind ? ' is-' + kind : '');
+  }
+
+  // devolve o valor do frete (0 = grátis) ou null se ainda não dá pra calcular
+  function shippingCost(subtotal){
+    if (subtotal <= 0) return null;
+    if (subtotal >= FREE_SHIPPING_MIN) return 0;
+    if (!shipTo) return null;
+    const faixa = SHIPPING_TABLE.find(r => r.ufs.includes(shipTo.uf));
+    return faixa ? faixa.preco : null;
+  }
+
+  function renderTotals(subtotal){
+    const shipRow = document.getElementById('shipRow');
+    const shipBox = document.getElementById('shipBox');
+    const totalEl = document.getElementById('cartTotal');
+    const shipEl = document.getElementById('cartShipping');
+    shipBox.hidden = subtotal <= 0;
+    if (subtotal <= 0){ shipRow.hidden = true; totalEl.textContent = money(0); return; }
+
+    const cost = shippingCost(subtotal);
+    shipRow.hidden = false;
+
+    if (cost === null){
+      // CEP ainda não informado: já mostra uma estimativa ("a partir de")
+      const min = Math.min(...SHIPPING_TABLE.map(r => r.preco));
+      shipEl.textContent = `a partir de ${money(min)}`;
+      totalEl.textContent = `a partir de ${money(subtotal + min)}`;
+      if (!shipMsg.classList.contains('is-error')){
+        setShipMsg(`Informe seu CEP para ver o valor exato. Frete grátis a partir de ${money(FREE_SHIPPING_MIN)}.`);
+      }
+      return;
+    }
+
+    shipEl.textContent = cost === 0 ? 'Grátis' : money(cost);
+    totalEl.textContent = money(subtotal + cost);
+    if (cost === 0){
+      setShipMsg(shipTo ? `Entrega para ${shipTo.city}/${shipTo.uf} — frete grátis!` : 'Frete grátis neste pedido!', 'ok');
+    } else {
+      const falta = FREE_SHIPPING_MIN - subtotal;
+      setShipMsg(`Entrega para ${shipTo.city}/${shipTo.uf}. Faltam ${money(falta)} para frete grátis.`, 'ok');
+    }
+  }
+
+  function currentSubtotal(){
+    return Object.keys(cart).reduce((t, id) => {
+      const p = products.find(x => x.id === id);
+      return t + (p ? p.price : 0);
+    }, 0);
+  }
+
+  async function calcShipping(){
+    const digits = cepInput.value.replace(/\D/g, '');
+    if (digits.length !== 8){
+      setShipMsg('Digite um CEP com 8 números.', 'error');
+      return;
+    }
+    cepBtn.disabled = true;
+    setShipMsg('Calculando…');
+    try {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 8000);
+      const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`, { signal: ctrl.signal });
+      clearTimeout(timer);
+      if (!res.ok) throw new Error('http ' + res.status);
+      const data = await res.json();
+      if (data.erro) {
+        shipTo = null;
+        try { localStorage.removeItem('letrama_frete'); } catch(e){}
+        setShipMsg('CEP não encontrado. Confira os números.', 'error');
+        renderTotals(currentSubtotal());
+        return;
+      }
+      shipTo = { cep: digits.replace(/(\d{5})(\d{3})/, '$1-$2'), uf: data.uf, city: data.localidade };
+      try { localStorage.setItem('letrama_frete', JSON.stringify(shipTo)); } catch(e){}
+      if (!SHIPPING_TABLE.some(r => r.ufs.includes(shipTo.uf))){
+        setShipMsg('Ainda não calculamos frete para essa região — combine direto pelo WhatsApp.', 'error');
+        shipTo = null;
+      }
+      renderTotals(currentSubtotal());
+    } catch (err) {
+      setShipMsg('Não consegui calcular agora. Você pode finalizar e combinar o frete pelo WhatsApp.', 'error');
+    } finally {
+      cepBtn.disabled = false;
+    }
+  }
+
+  cepInput.addEventListener('input', () => {
+    const d = cepInput.value.replace(/\D/g, '').slice(0, 8);
+    cepInput.value = d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d;
+    // calcula sozinho assim que o CEP estiver completo (sem precisar clicar)
+    if (d.length === 8 && !cepBtn.disabled) calcShipping();
+  });
+  cepInput.addEventListener('keydown', (e) => { if (e.key === 'Enter'){ e.preventDefault(); calcShipping(); } });
+  cepBtn.addEventListener('click', calcShipping);
+  if (shipTo) cepInput.value = shipTo.cep;
+
+  // ---------------- Drawer open/close ----------------
+  const overlay = document.getElementById('overlay');
+  const drawer = document.getElementById('cartDrawer');
+  function openCart(){
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+  }
+  function closeCart(){
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+  }
+  document.getElementById('cartOpenBtn').addEventListener('click', openCart);
+  document.getElementById('cartCloseBtn').addEventListener('click', closeCart);
+  overlay.addEventListener('click', () => { closeCart(); closeModal(); });
+
+  // ---------------- Checkout via WhatsApp ----------------
+  document.getElementById('checkoutBtn').addEventListener('click', () => {
+    const items = Object.keys(cart);
+    if (items.length === 0) return;
+    const lines = ['Olá! Gostaria de encomendar:'];
+    let subtotal = 0;
+    items.forEach(id => {
+      const p = products.find(x => x.id === id);
+      subtotal += p.price;
+      lines.push(`- ${p.name} (${money(p.price)})`);
+    });
+    const cost = shippingCost(subtotal);
+    lines.push('', `Subtotal: ${money(subtotal)}`);
+    if (cost === null){
+      lines.push('Frete: a combinar', `Total (sem frete): ${money(subtotal)}`);
+    } else {
+      const onde = shipTo ? ` (${shipTo.cep} · ${shipTo.city}/${shipTo.uf})` : '';
+      lines.push(
+        `Frete${onde}: ${cost === 0 ? 'grátis' : money(cost)}`,
+        `Total: ${money(subtotal + cost)}`
+      );
+    }
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`, '_blank');
+  });
+  document.getElementById('footerWhatsapp').addEventListener('click', (e) => {
+    e.preventDefault();
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=Olá! Vim pelo site da LeTrama e gostaria de mais informações.`, '_blank');
+  });
+
+  // ---------------- Grid click delegation ----------------
+  grid.addEventListener('click', (e) => {
+    const addId = e.target.getAttribute('data-add');
+    const openId = e.target.getAttribute('data-open');
+    if (addId) addToCart(addId);
+    if (openId) openModal(openId);
+  });
+  document.getElementById('drawerItems').addEventListener('click', (e) => {
+    const rem = e.target.getAttribute('data-remove');
+    if (rem) removeItem(rem);
+  });
+
+  // ---------------- Galeria de fotos do modal ----------------
+  let galleryImages = [];
+  let galleryIndex = 0;
+
+  function renderModalGallery(p){
+    galleryImages = (p.images && p.images.length) ? p.images : [];
+    galleryIndex = 0;
+    const modalSwatch = document.getElementById('modalSwatch');
+    modalSwatch.style.setProperty('--swatch', p.swatch);
+
+    if (galleryImages.length === 0){
+      modalSwatch.innerHTML = soldBadge(p);
+      return;
+    }
+
+    const dots = galleryImages.length > 1
+      ? `<div class="gallery-dots" id="galleryDots">${galleryImages.map((_, i) =>
+          `<button data-dot="${i}" class="${i === 0 ? 'is-active' : ''}" aria-label="Foto ${i + 1}"></button>`
+        ).join('')}</div>`
+      : '';
+    const arrows = galleryImages.length > 1
+      ? `<button class="gallery-arrow prev" id="galleryPrev" aria-label="Foto anterior">‹</button>
+         <button class="gallery-arrow next" id="galleryNext" aria-label="Próxima foto">›</button>`
+      : '';
+
+    modalSwatch.innerHTML = `
+      <img id="galleryImg" src="${galleryImages[0]}" alt="${p.name}">
+      ${arrows}
+      ${dots}
+      ${soldBadge(p)}
+    `;
+
+    if (galleryImages.length > 1){
+      document.getElementById('galleryPrev').addEventListener('click', () => shiftGallery(-1));
+      document.getElementById('galleryNext').addEventListener('click', () => shiftGallery(1));
+      document.querySelectorAll('#galleryDots button').forEach(btn => {
+        btn.addEventListener('click', () => {
+          galleryIndex = Number(btn.dataset.dot);
+          updateGallery();
+        });
+      });
+      // arrastar o dedo pro lado (mobile) também troca de foto
+      let touchStartX = null;
+      modalSwatch.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
+      modalSwatch.addEventListener('touchend', e => {
+        if (touchStartX === null) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) > 40) shiftGallery(dx > 0 ? -1 : 1);
+        touchStartX = null;
+      });
+    }
+  }
+
+  function shiftGallery(delta){
+    const len = galleryImages.length;
+    galleryIndex = (galleryIndex + delta + len) % len;
+    updateGallery();
+  }
+
+  function updateGallery(){
+    document.getElementById('galleryImg').src = galleryImages[galleryIndex];
+    document.querySelectorAll('#galleryDots button').forEach((b, i) => {
+      b.classList.toggle('is-active', i === galleryIndex);
+    });
+  }
+
+  // ---------------- Product modal ----------------
+  const modal = document.getElementById('productModal');
+  let currentModalId = null;
+  function openModal(id){
+    const p = products.find(x => x.id === id);
+    if (!p) return;
+    currentModalId = id;
+    renderModalGallery(p);
+    document.getElementById('modalName').textContent = p.name;
+    document.getElementById('modalPrice').textContent = money(p.price);
+    document.getElementById('modalDesc').textContent = p.desc;
+    document.getElementById('modalMaterial').textContent = p.material;
+    document.getElementById('modalDims').textContent = p.dims;
+    document.getElementById('modalColors').innerHTML = p.colors
+      .map(c => `<span class="dot" style="background:${c}"></span>`).join('');
+    const modalAddBtn = document.getElementById('modalAddBtn');
+    modalAddBtn.disabled = !!p.soldOut;
+    modalAddBtn.textContent = p.soldOut ? 'Esgotada' : 'Adicionar ao carrinho';
+    modal.classList.add('open');
+    overlay.classList.add('open');
+  }
+  function closeModal(){
+    modal.classList.remove('open');
+    if (!drawer.classList.contains('open')) overlay.classList.remove('open');
+  }
+  document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+  document.getElementById('modalAddBtn').addEventListener('click', () => {
+    if (currentModalId) addToCart(currentModalId);
+    closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape'){ closeCart(); closeModal(); }
+    if (modal.classList.contains('open')){
+      if (e.key === 'ArrowLeft' && galleryImages.length > 1) shiftGallery(-1);
+      if (e.key === 'ArrowRight' && galleryImages.length > 1) shiftGallery(1);
+    }
+  });
+
+  // ---------------- Mobile nav ----------------
+  const menuToggle = document.getElementById('menuToggle');
+  const mainNav = document.getElementById('mainNav');
+  menuToggle.addEventListener('click', () => {
+    const isOpen = mainNav.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', isOpen);
+  });
+  mainNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mainNav.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // ---------------- Barra fixa mais fina ao rolar ----------------
+  (function(){
+    const header = document.querySelector('header.site');
+    if (!header) return;
+    const update = () => header.classList.toggle('compact', window.scrollY > 40);
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+
+  renderCart();
+</script>
+</body>
+</html>
