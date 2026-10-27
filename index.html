@@ -559,6 +559,19 @@ header.site.compact{ --logo-h: 32px; }
   .color-dots{ display:flex; gap:.5rem; align-items:center; }
   .dot{ width:16px; height:16px; border-radius:50%; border:1px solid rgba(0,0,0,0.15); display:inline-block; }
 
+  /* ---------- Opções de cor (mesma bolsa, cores diferentes) ---------- */
+  .color-dots{ flex-wrap: wrap; justify-content: flex-end; }
+  .color-opt{
+    background:none; border: 2px solid transparent; border-radius:50%;
+    padding: 2px; line-height:0; cursor:pointer;
+    transition: border-color .15s ease;
+  }
+  .color-opt .dot{ width:20px; height:20px; }
+  .color-opt:hover{ border-color: var(--border); }
+  .color-opt.is-active{ border-color: var(--accent); }
+  .color-label{ font-size:.85rem; color: var(--ink); margin-left:.2rem; }
+  .card-dots{ display:flex; gap:.35rem; align-items:center; margin: .1rem 0 .2rem; }
+
   /* ---------- Galeria de fotos (dentro do modal) ---------- */
   .gallery-arrow{
   position:absolute; top:50%; transform:translateY(-50%);
@@ -848,6 +861,14 @@ header.site.compact{ --logo-h: 32px; }
   //   images: []                                 -> sem foto (mostra o quadro colorido)
   //   images: ['foto1.jpg']                       -> 1 foto, sem galeria
   //   images: ['foto1.jpg','foto2.jpg','foto3.jpg'] -> galeria com 3 fotos
+  //
+  // OPÇÕES DE COR (mesma bolsa em cores diferentes): crie um bloco normal
+  // para cada cor e, nos blocos das cores extras, adicione
+  //     variantOf: 'id-da-bolsa-principal',
+  //     option: { label: 'Nome da cor', color: '#HEX' },
+  // e na bolsa principal só o  option: { label: '...', color: '#HEX' }.
+  // Só a principal aparece na vitrine; as cores aparecem como botões
+  // no "Ver detalhes". Preço, fotos e esgotada são de cada cor.
   // ---------------------------------------------------------------
   const products = [
         {
@@ -952,6 +973,7 @@ header.site.compact{ --logo-h: 32px; }
       price: 240,
       swatch: '#8C4A3D',
       images: ['./creamy.jpeg', './creamy2.jpeg', './creamy3.jpeg'],
+      option: { label: 'Creamy', color: '#C5AD93' },   // nome e cor desta opção no seletor de cores
       soldOut: false,
       desc: 'Tote grande de crochê em ponto alto cerrado, ideal para o dia a dia. Estrutura firme e forro interno em algodão cru.',
       material: 'Fio de algodão 100% penteado',
@@ -988,6 +1010,8 @@ header.site.compact{ --logo-h: 32px; }
       price: 250,
       swatch: '#7C5C3E',
       images: ['./creamyblue.jpeg', './creamyblue2.jpeg', './creamyblue3.jpeg'],
+      variantOf: 'aurora',                                  // é uma cor da bolsa de id 'aurora' (não aparece sozinha na vitrine)
+      option: { label: 'Blueberry', color: '#106175' },
       soldOut: true,
       desc: 'Tote de crochê grosso, ideal para levar o essencial do dia. Alças reforçadas com costura dupla.',
       material: 'Fio de algodão grosso',
@@ -1034,22 +1058,38 @@ header.site.compact{ --logo-h: 32px; }
 
   // ---------------- Render collection grid ----------------
   const grid = document.getElementById('productGrid');
-  products.forEach(p => {
+  // Bolsas que são "cor extra" de outra (variantOf) não aparecem sozinhas na vitrine.
+  function groupOf(p){
+    const base = products.find(x => x.id === (p.variantOf || p.id)) || p;
+    return { base, members: [base, ...products.filter(x => x.variantOf === base.id)] };
+  }
+  const optColor = m => (m.option && m.option.color) || (m.colors && m.colors[0]) || '#ccc';
+  const optLabel = m => (m.option && m.option.label) || m.name;
+
+  products.filter(p => !p.variantOf).forEach(p => {
+    const { members } = groupOf(p);
+    const allSold = members.every(m => m.soldOut);
+    const dots = members.length > 1
+      ? `<div class="card-dots" aria-label="Cores disponíveis">${members.map(m =>
+          `<span class="dot" title="${optLabel(m)}" style="background:${optColor(m)}"></span>`).join('')}</div>`
+      : '';
+    let action;
+    if (allSold)           action = `<button class="btn small full" disabled>Esgotada</button>`;
+    else if (p.soldOut)    action = `<button class="btn small full" data-open="${p.id}">Ver cores disponíveis</button>`;
+    else                   action = `<button class="btn small full" data-add="${p.id}">Adicionar ao carrinho</button>`;
+
     const card = document.createElement('article');
-    card.className = 'card' + (p.soldOut ? ' is-sold' : '');
+    card.className = 'card' + (allSold ? ' is-sold' : '');
     card.innerHTML = `
-      <div class="swatch" style="--swatch:${p.swatch}" data-open="${p.id}">${swatchContent(p)}${soldBadge(p)}</div>
+      <div class="swatch" style="--swatch:${p.swatch}" data-open="${p.id}">${swatchContent(p)}${soldBadge({ soldOut: allSold })}</div>
       <div class="card-body">
         <h3>${p.name}</h3>
         <p class="card-price">${money(p.price)}</p>
+        ${dots}
         <div class="card-actions">
           <button class="link-btn" data-open="${p.id}">Ver detalhes</button>
         </div>
-        <div class="card-actions">
-          ${p.soldOut
-            ? `<button class="btn small full" disabled>Esgotada</button>`
-            : `<button class="btn small full" data-add="${p.id}">Adicionar ao carrinho</button>`}
-        </div>
+        <div class="card-actions">${action}</div>
       </div>`;
     grid.appendChild(card);
   });
@@ -1324,17 +1364,19 @@ header.site.compact{ --logo-h: 32px; }
           updateGallery();
         });
       });
-      // arrastar o dedo pro lado (mobile) também troca de foto
-      let touchStartX = null;
-      modalSwatch.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
-      modalSwatch.addEventListener('touchend', e => {
-        if (touchStartX === null) return;
-        const dx = e.changedTouches[0].clientX - touchStartX;
-        if (Math.abs(dx) > 40) shiftGallery(dx > 0 ? -1 : 1);
-        touchStartX = null;
-      });
     }
   }
+
+  // arrastar o dedo pro lado (mobile) também troca de foto — registrado uma única vez
+  let touchStartX = null;
+  const modalSwatchEl = document.getElementById('modalSwatch');
+  modalSwatchEl.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+  modalSwatchEl.addEventListener('touchend', e => {
+    if (touchStartX === null || galleryImages.length < 2) { touchStartX = null; return; }
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 40) shiftGallery(dx > 0 ? -1 : 1);
+    touchStartX = null;
+  });
 
   function shiftGallery(delta){
     const len = galleryImages.length;
@@ -1355,21 +1397,42 @@ header.site.compact{ --logo-h: 32px; }
   function openModal(id){
     const p = products.find(x => x.id === id);
     if (!p) return;
-    currentModalId = id;
+    showInModal(p);
+    modal.classList.add('open');
+    overlay.classList.add('open');
+  }
+
+  // Preenche o modal com uma bolsa (ou com a cor escolhida, se houver opções de cor)
+  function showInModal(p){
+    const { base, members } = groupOf(p);
+    const hasOptions = members.length > 1;
+    currentModalId = p.id;
     renderModalGallery(p);
-    document.getElementById('modalName').textContent = p.name;
+    document.getElementById('modalName').textContent = hasOptions ? base.name : p.name;
     document.getElementById('modalPrice').textContent = money(p.price);
     document.getElementById('modalDesc').textContent = p.desc;
     document.getElementById('modalMaterial').textContent = p.material;
     document.getElementById('modalDims').textContent = p.dims;
-    document.getElementById('modalColors').innerHTML = p.colors
-      .map(c => `<span class="dot" style="background:${c}"></span>`).join('');
+    document.getElementById('modalColors').innerHTML = hasOptions
+      ? members.map(m => `
+          <button type="button" class="color-opt${m.id === p.id ? ' is-active' : ''}" data-variant="${m.id}"
+                  aria-pressed="${m.id === p.id}" aria-label="${optLabel(m)}${m.soldOut ? ' (esgotada)' : ''}" title="${optLabel(m)}">
+            <span class="dot" style="background:${optColor(m)}"></span>
+          </button>`).join('')
+        + `<span class="color-label">${optLabel(p)}${p.soldOut ? ' · esgotada' : ''}</span>`
+      : p.colors.map(c => `<span class="dot" style="background:${c}"></span>`).join('');
     const modalAddBtn = document.getElementById('modalAddBtn');
     modalAddBtn.disabled = !!p.soldOut;
     modalAddBtn.textContent = p.soldOut ? 'Esgotada' : 'Adicionar ao carrinho';
-    modal.classList.add('open');
-    overlay.classList.add('open');
   }
+
+  // clicar numa bolinha de cor troca fotos, preço, medidas e disponibilidade
+  document.getElementById('modalColors').addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-variant]');
+    if (!btn) return;
+    const p = products.find(x => x.id === btn.dataset.variant);
+    if (p) showInModal(p);
+  });
   function closeModal(){
     modal.classList.remove('open');
     if (!drawer.classList.contains('open')) overlay.classList.remove('open');
