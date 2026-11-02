@@ -139,27 +139,29 @@ header.site.compact{ --logo-h: 32px; }
   .header-actions{ display:flex; align-items:center; gap: 1.4rem; }
 
   .cart-btn{
-    position:relative;
-    display:flex; align-items:center; gap:.5rem;
-    background:none; border:1px solid var(--border);
-    padding: .45rem .85rem;
-    border-radius: var(--radius-m);
-    cursor:pointer;
-    color: var(--ink);
-    font-size: .88rem;
-    transition: padding .2s ease;
-  }
-  header.site.compact .cart-btn{ padding: .35rem .8rem; }
-  .cart-btn:hover{ border-color: var(--accent); }
-  .cart-count{
-    background: var(--accent);
-    color: var(--surface);
-    font-size: .72rem;
-    min-width: 1.2rem; height: 1.2rem;
-    border-radius: 50%;
-    display:flex; align-items:center; justify-content:center;
-    padding: 0 .3rem;
-  }
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  background: none; border: none;
+  padding: .4rem;
+  cursor: pointer;
+  color: var(--ink);
+  transition: color .15s ease;
+}
+.cart-btn:hover{ color: var(--accent); }
+.cart-count{
+  position: absolute;
+  top: -1px; right: -3px;
+  background: var(--accent);
+  color: var(--surface);
+  font-size: .64rem; font-weight: 600;
+  min-width: 1.05rem; height: 1.05rem;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 .2rem;
+  line-height: 1;
+}
+.cart-count[hidden]{ display: none; 
+}
   .menu-toggle{
     display:none;
     background:none; border:none; cursor:pointer;
@@ -682,8 +684,13 @@ header.site.compact{ --logo-h: 32px; }
     </nav>
     <div class="header-actions">
       <button class="cart-btn" id="cartOpenBtn" aria-label="Abrir carrinho">
-        Carrinho <span class="cart-count" id="cartCount">0</span>
-      </button>
+  <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor"
+       stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M5 8h14l-1 12H6L5 8z"/>
+    <path d="M9 8V6.5a3 3 0 0 1 6 0V8"/>
+  </svg>
+  <span class="cart-count" id="cartCount">0</span>
+</button>
     </div>
   </div>
 </header>
@@ -1128,6 +1135,7 @@ header.site.compact{ --logo-h: 32px; }
     const countEl = document.getElementById('cartCount');
     const subtotalEl = document.getElementById('cartSubtotal');
     countEl.textContent = items.length;
+    countEl.hidden = items.length === 0;
 
     if (items.length === 0){
       wrap.innerHTML = '<p class="drawer-empty">Seu carrinho está vazio.</p>';
