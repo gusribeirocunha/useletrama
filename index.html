@@ -202,14 +202,10 @@ header.site.compact{ --logo-h: 32px; }
 }
 .hero-art{ display:none; }
   .hero .wrap{
-  display:flex;
-  justify-content:center;
+  display:grid;
+  grid-template-columns: 1.05fr 0.95fr;
   align-items:center;
-}
-
-.hero-copy{
-  max-width:none;
-  text-align:center;
+  gap: clamp(2rem, 5vw, 4rem);
 }
   .hero-eyebrow{
     font-size: .95rem;
@@ -719,10 +715,7 @@ header.site.compact{ --logo-h: 32px; }
     .hero{ padding-block: 3.2rem 3.4rem; background-position: 62% 30%; }
     .hero h1{ font-size: clamp(2rem, 9vw, 2.5rem); max-width: 16ch; }
     .hero p.lede{ margin: 1rem 0 1.5rem; font-size: 1rem; }
-    .hero .btn{
-  width:auto;
-  justify-content:center;
-}
+    .hero .btn{ width:100%; justify-content:center; }
 
     /* ---- Vitrine: 2 bolsas lado a lado + 1 grande, repetindo ---- */
     section.collection{ padding-block: 2.6rem 3rem; }
