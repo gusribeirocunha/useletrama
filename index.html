@@ -202,11 +202,15 @@ header.site.compact{ --logo-h: 32px; }
 }
 .hero-art{ display:none; }
   .hero .wrap{
-    display:grid;
-    grid-template-columns: 1.05fr 0.95fr;
-    align-items:center;
-    gap: clamp(2rem, 5vw, 4rem);
-  }
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.hero-copy{
+  max-width:none;
+  text-align:center;
+}
   .hero-eyebrow{
     font-size: .95rem;
     color: #E7C9BC;
@@ -715,7 +719,10 @@ header.site.compact{ --logo-h: 32px; }
     .hero{ padding-block: 3.2rem 3.4rem; background-position: 62% 30%; }
     .hero h1{ font-size: clamp(2rem, 9vw, 2.5rem); max-width: 16ch; }
     .hero p.lede{ margin: 1rem 0 1.5rem; font-size: 1rem; }
-    .hero .btn{ width:100%; justify-content:center; }
+    .hero .btn{
+  width:auto;
+  justify-content:center;
+}
 
     /* ---- Vitrine: 2 bolsas lado a lado + 1 grande, repetindo ---- */
     section.collection{ padding-block: 2.6rem 3rem; }
@@ -810,12 +817,9 @@ header.site.compact{ --logo-h: 32px; }
   <!-- ---------- HERO ---------- -->
   <section class="hero">
     <div class="wrap">
-      <div class="hero-copy">
-        <p class="hero-eyebrow reveal">Feito à mão, ponto a ponto</p>
-        <h1 class="reveal d1">Sem pressa e<br>Sem duas peças exatamente iguais</h1>
-        <p class="lede reveal d2">Bolsas de crochê autorais, criadas uma a uma por uma artesã.</p>
-        <a href="#colecao" class="btn reveal d2">Ver a coleção</a>
-      </div>
+     <div class="hero-copy">
+  <a href="#colecao" class="btn reveal d2">Ver a coleção</a>
+</div>
       <div class="hero-art">
         <svg viewBox="0 0 560 560" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Ilustração de uma bolsa de crochê">
           <defs>
